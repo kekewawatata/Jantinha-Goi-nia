@@ -1,0 +1,100 @@
+/* app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    @apply bg-surface-base text-zinc-100 antialiased selection:bg-orange-500/30 selection:text-orange-200;
+    /* Previne zoom ao focar input no iOS */
+    font-size: 16px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Scrollbar escura personalizada */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: #0c0e14; }
+  ::-webkit-scrollbar-thumb { background: #272a38; border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: #f97316; }
+}
+
+@layer components {
+  /* Botão padrão grande (zona de toque segura 48px) */
+  .btn {
+    @apply min-h-[48px] px-5 py-3 rounded-xl font-semibold text-base
+           active:scale-95 transition-all duration-150 select-none
+           flex items-center justify-center gap-2 cursor-pointer shadow-sm;
+  }
+  .btn-primary {
+    @apply btn bg-gradient-to-r from-orange-500 to-amber-500 text-white
+           hover:from-orange-600 hover:to-amber-600 hover:shadow-ember
+           active:from-orange-700 active:to-amber-700;
+  }
+  .btn-success {
+    @apply btn bg-emerald-600 text-white hover:bg-emerald-500 active:bg-emerald-700
+           hover:shadow-[0_0_20px_rgba(16,185,129,0.3)];
+  }
+  .btn-danger {
+    @apply btn bg-rose-600 text-white hover:bg-rose-500 active:bg-rose-700
+           hover:shadow-[0_0_20px_rgba(244,63,94,0.3)];
+  }
+  .btn-secondary {
+    @apply btn bg-surface-elevated text-zinc-200 border border-white/5
+           hover:bg-surface-overlay hover:border-white/10 active:bg-zinc-800;
+  }
+  .btn-ghost {
+    @apply btn bg-transparent border border-zinc-700/60 text-zinc-300
+           hover:bg-white/5 hover:border-zinc-500;
+  }
+
+  /* Card base refinado */
+  .card {
+    @apply bg-surface-card border border-white/[0.08] rounded-2xl p-4 shadow-glass transition-all duration-200;
+  }
+  .card-interactive {
+    @apply card hover:border-orange-500/40 hover:bg-surface-elevated hover:shadow-ember cursor-pointer active:scale-[0.99];
+  }
+
+  /* Glassmorphism e Painéis Flutuantes */
+  .glass-panel {
+    @apply bg-surface-card/85 backdrop-blur-xl border border-white/10 shadow-glass;
+  }
+  .glass-header {
+    @apply bg-surface-base/80 backdrop-blur-md border-b border-white/[0.06];
+  }
+
+  /* Badges de status gastronômicos */
+  .badge-novo {
+    @apply bg-rose-500/15 text-rose-300 border border-rose-500/30 shadow-[0_0_10px_rgba(244,63,94,0.15)];
+  }
+  .badge-preparo {
+    @apply bg-amber-500/15 text-amber-300 border border-amber-500/30 shadow-[0_0_10px_rgba(245,158,11,0.15)];
+  }
+  .badge-pronto {
+    @apply bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 shadow-[0_0_10px_rgba(16,185,129,0.15)];
+  }
+  .badge-entregue {
+    @apply bg-zinc-800 text-zinc-400 border border-zinc-700/50;
+  }
+
+  /* Status estoque */
+  .estoque-zerado  { @apply text-rose-400 font-bold; }
+  .estoque-critico { @apply text-orange-400 font-semibold; }
+  .estoque-baixo   { @apply text-amber-400; }
+  .estoque-ok      { @apply text-emerald-400; }
+
+  /* Bottom nav com glassmorphism */
+  .nav-bottom {
+    @apply fixed bottom-0 left-0 right-0 h-16 bg-surface-card/90 backdrop-blur-xl border-t border-white/[0.08]
+           flex items-center justify-around z-40 shadow-2xl;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .nav-item {
+    @apply flex flex-col items-center gap-1 text-zinc-400 text-[11px] font-medium
+           min-w-[56px] py-1.5 rounded-xl active:bg-white/5 transition-all duration-150;
+  }
+  .nav-item.active {
+    @apply text-orange-400 font-semibold drop-shadow-[0_0_8px_rgba(249,115,22,0.4)];
+  }
+}

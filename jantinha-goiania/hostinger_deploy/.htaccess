@@ -1,0 +1,66 @@
+# ============================================================
+# .htaccess para Hostinger (OpenLiteSpeed / Apache)
+# Jantinha Goiânia ERP
+# ============================================================
+
+Options +FollowSymLinks
+DirectoryIndex index.html index.php
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# ─── 0. Preflight CORS ───────────────────────────────────────────
+RewriteCond %{REQUEST_METHOD} =OPTIONS
+RewriteRule ^ - [R=200,L]
+
+# ─── 1. Arquivos estáticos físicos existentes (css, js, imagens, etc) ──
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# ─── 2. Rotas de API com parâmetros dinâmicos ────────────────────
+RewriteRule ^api/pedidos/([^/]+)/entregar/?$ /api/pedidos/entregar.php?id=$1 [QSA,L]
+RewriteRule ^api/pedidos/([^/]+)/fechar/?$   /api/pedidos/fechar.php?id=$1   [QSA,L]
+RewriteRule ^api/pedidos/([^/]+)/liberar/?$  /api/pedidos/liberar.php?id=$1  [QSA,L]
+RewriteRule ^api/pedidos/liberar/?$          /api/pedidos/liberar.php         [QSA,L]
+RewriteRule ^api/pedidos/([^/]+)/item/([^/]+)/status/?$ /api/pedidos/item_status.php?pedidoId=$1&itemId=$2 [QSA,L]
+
+# ─── 3. Rotas de API explícitas ──────────────────────────────────
+RewriteRule ^api/auth/login/?$          /api/auth/login.php          [QSA,L]
+RewriteRule ^api/auth/logout/?$         /api/auth/logout.php         [QSA,L]
+RewriteRule ^api/auth/check/?$          /api/auth/check.php          [QSA,L]
+RewriteRule ^api/dashboard/limpar/?$    /api/dashboard/limpar.php    [QSA,L]
+RewriteRule ^api/dashboard/?$           /api/dashboard/index.php     [QSA,L]
+RewriteRule ^api/estoque/sugestao-compras/?$ /api/estoque/sugestao-compras.php [QSA,L]
+RewriteRule ^api/estoque/novo/?$        /api/estoque/novo.php        [QSA,L]
+RewriteRule ^api/estoque/limpar/?$      /api/estoque/limpar.php      [QSA,L]
+RewriteRule ^api/estoque/?$             /api/estoque/index.php       [QSA,L]
+RewriteRule ^api/financeiro/limpar/?$   /api/financeiro/limpar.php   [QSA,L]
+RewriteRule ^api/financeiro/?$          /api/financeiro/index.php    [QSA,L]
+RewriteRule ^api/pedidos/?$             /api/pedidos/index.php       [QSA,L]
+RewriteRule ^api/produtos/?$            /api/produtos/index.php      [QSA,L]
+RewriteRule ^api/alertas/?$             /api/alertas/index.php       [QSA,L]
+RewriteRule ^api/ficha-tecnica/?$       /api/ficha-tecnica/index.php [QSA,L]
+RewriteRule ^api/diagnostico/?$         /api/diagnostico.php         [QSA,L]
+RewriteRule ^api/ping/?$                /api/ping.php                [QSA,L]
+RewriteRule ^api/teste/?$               /api/teste.php               [QSA,L]
+
+# ─── 4. Rotas de Páginas Estáticas do Frontend ───────────────────
+RewriteRule ^adm/dashboard/?$     /adm/dashboard/index.html   [L]
+RewriteRule ^adm/estoque/?$       /adm/estoque/index.html     [L]
+RewriteRule ^adm/financeiro/?$    /adm/financeiro/index.html  [L]
+RewriteRule ^adm/produtos/?$      /adm/produtos/index.html    [L]
+RewriteRule ^login/?$             /login/index.html           [L]
+RewriteRule ^mesa/?$              /mesa/index.html            [L]
+RewriteRule ^pdv/?$               /pdv/index.html             [L]
+RewriteRule ^producao/?$          /producao/index.html        [L]
+
+# ─── 5. Fallback para rotas estáticas em diretórios ──────────────
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME}/index.html -f
+RewriteRule ^(.+?)/?$ $1/index.html [L]
+
+# ─── 6. Fallback final da raiz ───────────────────────────────────
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.html [L]
+</IfModule>
